@@ -43,6 +43,7 @@ RUN python3 -m pip install --upgrade pip \
       && python3 -m pip install virtualenv \
       && python3 -m pip install numpy
 
+
 ADD OTB-7.2.0-Linux64.run /tmp
 ENV OTB_INSTALL_DIRPATH=/opt/otb-7.2.0
 RUN chmod +x OTB-7.2.0-Linux64.run \
@@ -65,12 +66,32 @@ RUN python3 -m virtualenv ${S1TILING_VENV} \
       && source ${S1TILING_VENV}/bin/activate \
       && pip install numpy \
       && pip install S1Tiling==${S1TILING_VERSION} \
-      && pip install pipdeptree
+      && pip install pipdeptree \
+      && pip install eodag \
+      && pip install geopandas
 
 
-
+RUN pip3 install boto3 \
+  && pip3 install botocore \
+  && pip3 install psycopg2-binary
 
 ADD entrypoint.sh /opt
+
+RUN mkdir /srtm
+ADD Input_DEM_egm96.grd /srtm
+
+RUN mkdir /opt/s1tiling-venv/s1processor_config
+ADD S1Processor.cfg /opt/s1tiling-venv/s1processor_config
+
+RUN mkdir /opt/s1tiling-venv/download_script
+ADD main.py /opt/s1tiling-venv/download_script
+ADD s2_idx.geojson /opt/s1tiling-venv/download_script
+RUN chmod +x /opt/s1tiling-venv/download_script/main.py
+ADD eodag_download_template.sh /opt/s1tiling-venv/download_script
+RUN chmod +x /opt/s1tiling-venv/download_script/eodag_download_template.sh
+
 RUN chmod +x /opt/entrypoint.sh
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
-CMD [ "-h" ]
+#ENTRYPOINT [ "/opt/entrypoint.sh" ]
+#CMD [ "-h" ]
+WORKDIR /root
+ENTRYPOINT [ "/bin/bash" ]
