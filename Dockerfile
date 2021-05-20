@@ -37,7 +37,9 @@ RUN yum install -y centos-release-scl \
 SHELL ["/usr/bin/scl", "enable", "devtoolset-7"]
 RUN yum install -y freeglut mesa-libEGL-devel mesa-libGL-devel
 
-ADD cmake-3.18.4-Linux-x86_64.tar.gz /opt/
+ARG CMAKE_VERSION=3.18.6
+#ADD cmake-3.18.4-Linux-x86_64.tar.gz /opt/
+ADD https://cmake.org/files/v3.18/cmake-${CMAKE_VERSION}.tar.gz /opt
 
 RUN python3 -m pip install --upgrade pip \
       && python3 -m pip install virtualenv \
@@ -51,7 +53,7 @@ RUN chmod +x OTB-${OTB_VERSION}-Linux64.run \
       && ./OTB-${OTB_VERSION}-Linux64.run --target ${OTB_INSTALL_DIRPATH} \
       && cd ${OTB_INSTALL_DIRPATH}  \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
-      && /opt/cmake-3.18.4-Linux-x86_64/bin/ctest -S ${OTB_INSTALL_DIRPATH}/share/otb/swig/build_wrapping.cmake -VV
+      && /opt/cmake-${CMAKE_VERSION}-Linux-x86_64/bin/ctest -S ${OTB_INSTALL_DIRPATH}/share/otb/swig/build_wrapping.cmake -VV
 
 ADD gdal-config ${OTB_INSTALL_DIRPATH}/bin
 RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
