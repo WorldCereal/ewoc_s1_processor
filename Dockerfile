@@ -25,7 +25,7 @@
 # =========================================================================
 FROM centos:centos7.9.2009
 LABEL maintainer="CS GROUP France"
-LABEL version="1.0"
+LABEL version="0.1"
 LABEL description="This docker allow to run S1Tiling processing chain."
 
 WORKDIR /tmp
