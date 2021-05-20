@@ -59,7 +59,7 @@ RUN echo "# Patching for s1tiling" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && echo 'LD_LIBRARY_PATH=$(cat_path "${CMAKE_PREFIX_PATH}/lib" "$LD_LIBRARY_PATH")' >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && echo "export LD_LIBRARY_PATH" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile
 
-ARG S1TILING_VERSION=0.2.0rc2
+ARG S1TILING_VERSION=0.2.0rc3
 ENV S1TILING_VENV=/opt/s1tiling-venv
 RUN python3 -m virtualenv ${S1TILING_VENV} \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
