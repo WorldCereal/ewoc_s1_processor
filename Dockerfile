@@ -43,11 +43,11 @@ RUN python3 -m pip install --upgrade pip \
       && python3 -m pip install virtualenv \
       && python3 -m pip install numpy
 
-
-ADD OTB-7.2.0-Linux64.run /tmp
-ENV OTB_INSTALL_DIRPATH=/opt/otb-7.2.0
-RUN chmod +x OTB-7.2.0-Linux64.run \
-      && ./OTB-7.2.0-Linux64.run --target ${OTB_INSTALL_DIRPATH} \
+ARG OTB_VERSION=7.3.0
+ADD OTB-${OTB_VERSION}-Linux64.run /tmp
+ENV OTB_INSTALL_DIRPATH=/opt/otb-${OTB_VERSION}
+RUN chmod +x OTB-${OTB_VERSION}-Linux64.run \
+      && ./OTB-${OTB_VERSION}-Linux64.run --target ${OTB_INSTALL_DIRPATH} \
       && cd ${OTB_INSTALL_DIRPATH}  \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && /opt/cmake-3.18.4-Linux-x86_64/bin/ctest -S ${OTB_INSTALL_DIRPATH}/share/otb/swig/build_wrapping.cmake -VV
