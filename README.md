@@ -5,7 +5,7 @@
 To build the docker you need to put with the Dockerfile:
 
 - the linux binaries of [CMake 3.18.4](https://cmake.org/files/v3.18/cmake-3.18.4-Linux-x86_64.tar.gz)
-- the linux binaries of [OTB-7.2.0](https://www.orfeo-toolbox.org/packages/OTB-7.2.0-Linux64.run)
+- the linux binaries of [OTB-7.3.0](https://www.orfeo-toolbox.org/packages/OTB-7.3.0-Linux64.run)
 
 You can now run the following command to buid the docker image:
 

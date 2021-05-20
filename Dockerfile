@@ -44,7 +44,8 @@ RUN python3 -m pip install --upgrade pip \
       && python3 -m pip install numpy
 
 ARG OTB_VERSION=7.3.0
-ADD OTB-${OTB_VERSION}-Linux64.run /tmp
+ADD https://www.orfeo-toolbox.org/packages/OTB-${OTB_VERSION}-Linux64.run /tmp
+#ADD OTB-${OTB_VERSION}-Linux64.run /tmp
 ENV OTB_INSTALL_DIRPATH=/opt/otb-${OTB_VERSION}
 RUN chmod +x OTB-${OTB_VERSION}-Linux64.run \
       && ./OTB-${OTB_VERSION}-Linux64.run --target ${OTB_INSTALL_DIRPATH} \
