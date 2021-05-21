@@ -39,11 +39,13 @@ RUN yum install -y freeglut mesa-libEGL-devel mesa-libGL-devel
 
 ARG CMAKE_VERSION=3.18.6
 #ADD cmake-3.18.4-Linux-x86_64.tar.gz /opt/
-ADD https://cmake.org/files/v3.18/cmake-${CMAKE_VERSION}.tar.gz /opt
+ADD https://cmake.org/files/v3.18/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz /tmp
+RUN tar -xzf cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz -C /opt
 
-RUN python3 -m pip install --upgrade pip \
-      && python3 -m pip install virtualenv \
-      && python3 -m pip install numpy
+
+RUN python3 -m pip install --no-cache-dir --upgrade pip \
+      && python3 -m pip install --no-cache-dir virtualenv \
+      && python3 -m pip install --no-cache-dir numpy
 
 ARG OTB_VERSION=7.3.0
 ADD https://www.orfeo-toolbox.org/packages/OTB-${OTB_VERSION}-Linux64.run /tmp
@@ -67,11 +69,11 @@ ENV S1TILING_VENV=/opt/s1tiling-venv
 RUN python3 -m virtualenv ${S1TILING_VENV} \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && source ${S1TILING_VENV}/bin/activate \
-      && pip install numpy \
-      && pip install S1Tiling==${S1TILING_VERSION} \
-      && pip install pipdeptree \
-      && pip install eodag \
-      && pip install geopandas
+      && pip install --no-cache-dir numpy \
+      && pip install --no-cache-dir S1Tiling==${S1TILING_VERSION} \
+      && pip install --no-cache-dir pipdeptree \
+      && pip install --no-cache-dir eodag \
+      && pip install --no-cache-dir geopandas
 
 
 RUN pip3 install boto3 \
