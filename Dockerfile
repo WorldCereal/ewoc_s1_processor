@@ -29,6 +29,7 @@ LABEL version="0.1.1"
 LABEL description="This docker allow to run S1Tiling processing chain."
 
 WORKDIR /tmp
+ENV LANG=en_US.utf8
 
 RUN yum update -y && yum upgrade -y && yum install -y python36 python3-devel file gcc-c++
 RUN yum install -y centos-release-scl \
@@ -79,6 +80,11 @@ RUN python3 -m virtualenv ${S1TILING_VENV} \
 RUN pip3 install boto3 \
   && pip3 install botocore \
   && pip3 install psycopg2-binary
+
+ADD eotile-0.1-py3-none-any.whl /tmp
+RUN pip3 install /tmp/eotile-0.1-py3-none-any.whl
+COPY dataship-0.0.1.tar.gz /tmp
+RUN pip3 install /tmp/dataship-0.0.1.tar.gz
 
 ADD entrypoint.sh /opt
 
