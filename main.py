@@ -35,13 +35,17 @@ def get_dates_from_prod_id(product_id):
     end_date = date + timedelta(days=1)
     return start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d"),sensor
 
-def donwload_s1tiling_style(dag,eodag_product,out_dir):
+def donwload_s1tiling_style(dag,eodag_product,out_dir,product_id):
     tmp_dir=os.path.join(out_dir,'tmp_'+eodag_product.properties['id'])
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir)
     dag.download(eodag_product,outputs_prefix=tmp_dir)
-    prod = os.listdir(tmp_dir)[0]
+    print("listdit = {}".format(os.listdir(tmp_dir)))
+    prod = os.listdir(tmp_dir)[1]
+    prod = product_id
+    print("prod = {}".format(prod))
     prod_id = prod.split('_')
+    print("Length of prod_id = {} | prod_id = {}".format(len(prod_id), prod_id))    
     dwn_prod = os.path.join(tmp_dir,prod)
     print(dwn_prod)
     os.system(f'mv {dwn_prod} {dwn_prod}.SAFE')
@@ -127,7 +131,8 @@ def eodag_by_ids(s2_tile_id,product_id,out_dir,provider,config_file=None):
     final_product.assets['manifest']={}
     final_product.assets['manifest']['href']=manifest_key
     #dag.download(final_product,outputs_prefix=out_dir)
-    donwload_s1tiling_style(dag,final_product,out_dir)
+    print("product_id = {}".format(product_id))
+    donwload_s1tiling_style(dag,final_product,out_dir,product_id)
     
 
 if __name__ == "__main__":
