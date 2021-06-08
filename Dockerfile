@@ -83,8 +83,9 @@ RUN pip3 install boto3 \
 
 ADD eotile-0.2rc2-py3-none-any.whl /tmp
 RUN pip3 install /tmp/eotile-0.2rc2-py3-none-any.whl
-COPY dataship-0.0.1.tar.gz /tmp
-RUN pip3 install /tmp/dataship-0.0.1.tar.gz
+
+COPY dataship-0.1.1.tar.gz /tmp
+RUN pip3 install /tmp/dataship-0.1.1.tar.gz
 
 ADD entrypoint.sh /opt
 
