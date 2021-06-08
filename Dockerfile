@@ -81,8 +81,8 @@ RUN pip3 install boto3 \
   && pip3 install botocore \
   && pip3 install psycopg2-binary
 
-ADD eotile-0.1-py3-none-any.whl /tmp
-RUN pip3 install /tmp/eotile-0.2rc1-py3-none-any.whl
+ADD eotile-0.2rc2-py3-none-any.whl /tmp
+RUN pip3 install /tmp/eotile-0.2rc2-py3-none-any.whl
 COPY dataship-0.0.1.tar.gz /tmp
 RUN pip3 install /tmp/dataship-0.0.1.tar.gz
 
