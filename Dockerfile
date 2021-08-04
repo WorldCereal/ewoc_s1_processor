@@ -23,87 +23,86 @@
 #          Mickaël SAVINAUD (CS Group France)
 #
 # =========================================================================
-FROM centos:centos7.9.2009
+FROM ubuntu:20.04
 LABEL maintainer="CS GROUP France"
-LABEL version="0.1.1"
-LABEL description="This docker allow to run S1Tiling processing chain."
+ARG EWOC_S1_DOCKER_VERSION='dev'
+LABEL version=${EWOC_S1_DOCKER_VERSION}
+LABEL description="This docker allow to run ewoc_s1 processing chain."
 
 WORKDIR /tmp
-ENV LANG=en_US.utf8
 
-RUN yum update -y && yum upgrade -y && yum install -y python36 python3-devel file gcc-c++
-RUN yum install -y centos-release-scl \
-      && yum-config-manager --enable rhel-server-rhscl-7-rpms \
-      && yum install -y devtoolset-7
-SHELL ["/usr/bin/scl", "enable", "devtoolset-7"]
-RUN yum install -y freeglut mesa-libEGL-devel mesa-libGL-devel
+ENV LANG=en_US.utf8 
 
-ARG CMAKE_VERSION=3.18.6
-#ADD cmake-3.18.4-Linux-x86_64.tar.gz /opt/
-ADD https://cmake.org/files/v3.18/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz /tmp
-RUN tar -xzf cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz -C /opt
-
+RUN apt-get update -y \
+&& DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
+    python3 \
+    python3-dev \
+    python3-pip \
+    virtualenv \
+    apt-utils file \
+    g++ cmake make freeglut3-dev \
+&& apt-get clean \
+&& rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip \
       && python3 -m pip install --no-cache-dir virtualenv \
-      && python3 -m pip install --no-cache-dir numpy
+      && python3 -m pip install --no-cache-dir 'numpy<1.19'
+
+#------------------------------------------------------------------------
+# Install and configure OTB for ewoc_s1
 
 ARG OTB_VERSION=7.3.0
-ADD https://www.orfeo-toolbox.org/packages/OTB-${OTB_VERSION}-Linux64.run /tmp
-#ADD OTB-${OTB_VERSION}-Linux64.run /tmp
+LABEL OTB="${OTB_VERSION}"
+#ADD https://www.orfeo-toolbox.org/packages/OTB-${OTB_VERSION}-Linux64.run /tmp
+ADD OTB-${OTB_VERSION}-Linux64.run /tmp
 ENV OTB_INSTALL_DIRPATH=/opt/otb-${OTB_VERSION}
 RUN chmod +x OTB-${OTB_VERSION}-Linux64.run \
       && ./OTB-${OTB_VERSION}-Linux64.run --target ${OTB_INSTALL_DIRPATH} \
       && cd ${OTB_INSTALL_DIRPATH}  \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
-      && /opt/cmake-${CMAKE_VERSION}-Linux-x86_64/bin/ctest -S ${OTB_INSTALL_DIRPATH}/share/otb/swig/build_wrapping.cmake -VV
+      && ctest -S ${OTB_INSTALL_DIRPATH}/share/otb/swig/build_wrapping.cmake -VV \
+      && echo "# Patching for s1tiling" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
+      && echo 'LD_LIBRARY_PATH=$(cat_path "${CMAKE_PREFIX_PATH}/lib" "$LD_LIBRARY_PATH")' >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
+      && echo "export LD_LIBRARY_PATH" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
+      && rm -r "${OTB_INSTALL_DIRPATH}/share/otb/swig/build" \
+      && rm -r "${OTB_INSTALL_DIRPATH}/bin/otbgui"* \
+        "${OTB_INSTALL_DIRPATH}/bin/monteverdi" \
+        "${OTB_INSTALL_DIRPATH}/lib/lib"*Qt* \
+        "${OTB_INSTALL_DIRPATH}/lib/libOTBMonteverdi"* \
+        "${OTB_INSTALL_DIRPATH}/lib/fonts" \
+      && rm /tmp/OTB-${OTB_VERSION}-Linux64.run
 
 ADD gdal-config ${OTB_INSTALL_DIRPATH}/bin
 RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 
-RUN echo "# Patching for s1tiling" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
-      && echo 'LD_LIBRARY_PATH=$(cat_path "${CMAKE_PREFIX_PATH}/lib" "$LD_LIBRARY_PATH")' >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
-      && echo "export LD_LIBRARY_PATH" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile
+#------------------------------------------------------------------------
+## Install ptyhon packages
+ARG EWOC_S1_VERSION=0.2
+LABEL EWOC_S1="${EWOC_S1_VERSION}"
+ARG EWOC_DATASHIP_VERSION=0.1.6
+LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
+ARG EOTILE_VERSION=0.2rc3
+LABEL EOTILE="${EOTILE_VERSION}"
 
-ARG S1TILING_VERSION=0.2.0rc6
-ENV S1TILING_VENV=/opt/s1tiling-venv
-RUN python3 -m virtualenv ${S1TILING_VENV} \
+# Copy private python packages
+ADD eotile-${EOTILE_VERSION}-py3-none-any.whl /tmp
+COPY dataship-${EWOC_DATASHIP_VERSION}.tar.gz /tmp
+COPY ewoc_s1-${EWOC_S1_VERSION}.tar.gz /tmp
+
+SHELL ["/bin/bash", "-c"]
+
+ENV EWOC_S1_VENV=/opt/ewoc_s1_venv
+RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
-      && source ${S1TILING_VENV}/bin/activate \
-      && pip install --no-cache-dir numpy \
-      && pip install --no-cache-dir S1Tiling==${S1TILING_VERSION} \
-      && pip install --no-cache-dir pipdeptree \
-      && pip install --no-cache-dir eodag \
-      && pip install --no-cache-dir geopandas
+      && source ${EWOC_S1_VENV}/bin/activate \
+      && pip install --no-cache-dir 'numpy<1.19' \
+      && pip install --no-cache-dir /tmp/eotile-${EOTILE_VERSION}-py3-none-any.whl \
+      && pip install --no-cache-dir /tmp/dataship-${EWOC_DATASHIP_VERSION}.tar.gz \
+      && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz
 
-
-RUN pip3 install boto3 \
-  && pip3 install botocore \
-  && pip3 install psycopg2-binary
-
-ADD eotile-0.2rc2-py3-none-any.whl /tmp
-RUN pip3 install /tmp/eotile-0.2rc2-py3-none-any.whl
-
-COPY dataship-0.1.1.tar.gz /tmp
-RUN pip3 install /tmp/dataship-0.1.1.tar.gz
 
 ADD entrypoint.sh /opt
 
-RUN mkdir /srtm
-ADD Input_DEM_egm96.grd /srtm
-
-RUN mkdir /opt/s1tiling-venv/s1processor_config
-ADD S1Processor.cfg /opt/s1tiling-venv/s1processor_config
-
-RUN mkdir /opt/s1tiling-venv/download_script
-ADD main.py /opt/s1tiling-venv/download_script
-ADD s2_idx.geojson /opt/s1tiling-venv/download_script
-RUN chmod +x /opt/s1tiling-venv/download_script/main.py
-ADD eodag_download_template.sh /opt/s1tiling-venv/download_script
-RUN chmod +x /opt/s1tiling-venv/download_script/eodag_download_template.sh
-
 RUN chmod +x /opt/entrypoint.sh
-#ENTRYPOINT [ "/opt/entrypoint.sh" ]
-#CMD [ "-h" ]
-WORKDIR /root
-ENTRYPOINT [ "/bin/bash" ]
+ENTRYPOINT [ "/opt/entrypoint.sh" ]
+CMD [ "-h" ]
