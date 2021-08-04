@@ -1,48 +1,64 @@
-# S1Tiling Docker
+# EWoC Sentinel 1 processor docker image
 
-## Build S1Tiling docker image
+## Build EWoC Sentinel 1 processor docker image
 
-To build the docker you need to put with the Dockerfile:
+To build the docker you need to have the following private python packages close to the Dockerfile:
 
-- the linux binaries of [CMake 3.18.4](https://cmake.org/files/v3.18/cmake-3.18.4-Linux-x86_64.tar.gz)
-- the linux binaries of [OTB-7.3.0](https://www.orfeo-toolbox.org/packages/OTB-7.3.0-Linux64.run)
+- eotile
+- dataship
+- ewoc_s1
 
-You can now run the following command to buid the docker image:
-
-:warning: change the tag_name as you want
+You can now run the following command to build the docker image:
 
 ```sh
-docker build -t s1tiling:tag_name "."
+docker build --pull --rm -f "Dockerfile" -t ewocs1processing:$(git describe) "."
 ```
 
-## Use S1Tiling docker image
+### Advanced usage
 
-## Prerequisites
+:warning: this usage is not guarantee
 
-You need to mount a volume which will be used by S1Tiling. This volume must:
+You can pass the following version with `--build-arg` option to bypass encoded version:
 
-- contain the input S1 GRD data
-- contain the srtm data
-- will be used to output data
+- `OTB_VERSION`
+- `EWOC_S1_VERSION`
+- `EWOC_DATASHIP_VERSION`
+- `EOTILE_VERSION`
 
-If you are not interested by the temporary data, you can use the `/tmp` of the image.
+## Use EWoC Sentinel 1 processor docker image
 
-:grey_exclamation: the config file of S1Tiling must be done according to the path of volume used by the image and not your local path.
+### Local usage (outside Argo workflow)
 
-:warning: EODAG usage is not currently supported
+You need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`.
 
-## Usage
+- To run the generation of ARD from S1 product ID with upload of data:
 
-With the following command you will obtain the help of S1Tiling:
+:warning: Adapt the `tag_name` to the right one
+
+```sh
+docker run --rm --env-file /local/path/to/env.file ewocs1processing:tag_name ewoc_s1_generate_ard_pid S1_PRD_ID_1 S1_PRD_ID_2 ... --upload -v
+```
+
+If you are interested by the temporary data or if you want retrieve output data whitout upload you need to mount volume with the option `-v / --volume` and use the docker path in the command line.
+
+- To run the generation of ARD from work plan with upload of data:
+
+:warning: Adapt the `tag_name` to the right one
+
+```sh
+docker run --rm -v /local/path/to/data:/data --env-file /local/path/to/env.file ewocs1processing:tag_name ewoc_s1_generate_ard_wp /data/path/to/wp.json --upload -v
+```
+
+:grey_exclamation: Please consult the help of `ewoc_s1` for more information on the ewoc_s1 CLI.
+
+### Argo Workflow usage
+
+:grey_exclamation: Environnement variables are provided by Argo Workflow
 
 :warning: adapt the `tag_name` to the previous one
 
-```sh
-docker run --rm  s1tiling:tag_name
-```
-
-If you want run S1Tiling, you can adapt the following command:
+:exclamation: Not currently implemented
 
 ```sh
-docker run --rm -v /local/path/to/data:/data s1tiling:tag_name /path/to/conf.file
+docker run --rm ewocs1processing:tag_name ewoc_s1_generate_ard_db -v
 ```
