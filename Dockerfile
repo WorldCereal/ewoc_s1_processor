@@ -25,8 +25,6 @@
 # =========================================================================
 FROM ubuntu:20.04
 LABEL maintainer="CS GROUP France"
-ARG EWOC_S1_DOCKER_VERSION='dev'
-LABEL version=${EWOC_S1_DOCKER_VERSION}
 LABEL description="This docker allow to run ewoc_s1 processing chain."
 
 WORKDIR /tmp
@@ -100,9 +98,10 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && pip install --no-cache-dir /tmp/dataship-${EWOC_DATASHIP_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz
 
+ARG EWOC_S1_DOCKER_VERSION='dev'
+LABEL version=${EWOC_S1_DOCKER_VERSION}
 
 ADD entrypoint.sh /opt
-
 RUN chmod +x /opt/entrypoint.sh
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
 CMD [ "-h" ]

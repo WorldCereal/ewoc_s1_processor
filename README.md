@@ -11,7 +11,7 @@ To build the docker you need to have the following private python packages close
 You can now run the following command to build the docker image:
 
 ```sh
-docker build --pull --rm -f "Dockerfile" -t ewocs1processing:$(git describe) "."
+docker build --build-arg EWOC_S1_DOCKER_VERSION=$(git describe) --pull --rm -f "Dockerfile" -t ewocs1processing:$(git describe) "."
 ```
 
 ### Advanced usage
