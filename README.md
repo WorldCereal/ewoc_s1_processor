@@ -38,7 +38,17 @@ docker pull hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processi
 
 You need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`.
 
-- To run the generation of ARD from S1 product ID with upload of data:
+This file contains the following variables:
+
+- S3_ENDPOINT
+- S3_ACCESS_KEY_ID
+- S3_SECRET_ACCESS_KEY
+- EODAG__CREODIAS__AUTH__CREDENTIALS__USERNAME
+- EODAG__CREODIAS__AUTH__CREDENTIALS__PASSWORD
+
+#### Generate S1 ARD from S1 prodcut ID
+
+To run the generation of ARD from S1 product ID with upload of data:
 
 :warning: Adapt the `tag_name` to the right one
 
@@ -48,7 +58,9 @@ docker run --rm --env-file /local/path/to/env.file ewocs1processing:tag_name ewo
 
 If you are interested by the temporary data or if you want retrieve output data whitout upload you need to mount volume with the option `-v / --volume` and use the docker path in the command line.
 
-- To run the generation of ARD from work plan with upload of data:
+#### Generate ARD from a workplan
+
+To run the generation of ARD from work plan with upload of data:
 
 :warning: Adapt the `tag_name` to the right one
 
