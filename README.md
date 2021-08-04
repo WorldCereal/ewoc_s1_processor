@@ -27,6 +27,13 @@ You can pass the following version with `--build-arg` option to bypass encoded v
 
 ## Use EWoC Sentinel 1 processor docker image
 
+### Retrieve EWoC Sentinel-1 processor docker image
+
+```sh
+docker login hfjcmwgl.gra5.container-registry.ovh.net -u ${harbor_username}
+docker pull hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
+```
+
 ### Local usage (outside Argo workflow)
 
 You need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`.
@@ -61,4 +68,14 @@ docker run --rm -v /local/path/to/data:/data --env-file /local/path/to/env.file 
 
 ```sh
 docker run --rm ewocs1processing:tag_name ewoc_s1_generate_ard_db -v
+```
+
+## Push EWoC Sentinel-1 processor docker image
+
+:grey_exclamation: Please push only version with tags in git :grey_exclamation:
+
+```sh
+docker login hfjcmwgl.gra5.container-registry.ovh.net -u ${harbor_username}
+docker tag ewocs1processing:${tag_name} hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
+docker push hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
 ```
