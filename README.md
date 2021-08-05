@@ -6,6 +6,7 @@ To build the docker you need to have the following private python packages close
 
 - eotile
 - dataship
+- s1Tiling in a specific version (0.2.0rc5-5-g5073222)
 - ewoc_s1
 
 You can now run the following command to build the docker image:
