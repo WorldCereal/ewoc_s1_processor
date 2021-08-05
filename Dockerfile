@@ -49,7 +49,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip \
 #------------------------------------------------------------------------
 # Install and configure OTB for ewoc_s1
 
-ARG OTB_VERSION=7.3.0
+ARG OTB_VERSION=7.4.0
 LABEL OTB="${OTB_VERSION}"
 #ADD https://www.orfeo-toolbox.org/packages/OTB-${OTB_VERSION}-Linux64.run /tmp
 ADD OTB-${OTB_VERSION}-Linux64.run /tmp
@@ -58,7 +58,7 @@ RUN chmod +x OTB-${OTB_VERSION}-Linux64.run \
       && ./OTB-${OTB_VERSION}-Linux64.run --target ${OTB_INSTALL_DIRPATH} \
       && cd ${OTB_INSTALL_DIRPATH}  \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
-      && ctest -S ${OTB_INSTALL_DIRPATH}/share/otb/swig/build_wrapping.cmake -VV \
+      && ctest -S ${OTB_INSTALL_DIRPATH}/share/otb/swig/build_wrapping.cmake -V \
       && echo "# Patching for s1tiling" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && echo 'LD_LIBRARY_PATH=$(cat_path "${CMAKE_PREFIX_PATH}/lib" "$LD_LIBRARY_PATH")' >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && echo "export LD_LIBRARY_PATH" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \

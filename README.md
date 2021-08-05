@@ -16,7 +16,7 @@ docker build --build-arg EWOC_S1_DOCKER_VERSION=$(git describe) --pull --rm -f "
 
 ### Advanced usage
 
-:warning: this usage is not guarantee
+:warning: No guarantee on the results
 
 You can pass the following version with `--build-arg` option to bypass encoded version:
 
