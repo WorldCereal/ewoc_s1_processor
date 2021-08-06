@@ -75,7 +75,7 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 
 #------------------------------------------------------------------------
 ## Install ptyhon packages
-ARG EWOC_S1_VERSION=0.2.1
+ARG EWOC_S1_VERSION=0.2.2
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
 ARG EWOC_DATASHIP_VERSION=0.1.6
 LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
