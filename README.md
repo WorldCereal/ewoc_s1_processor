@@ -6,7 +6,7 @@ To build the docker you need to have the following private python packages close
 
 - eotile
 - dataship
-- s1Tiling in a specific version (0.2.0rc5-5-g5073222)
+- s1Tiling in a specific version (0.2.0rc5-5-g5073222) cf. [!50](https://gitlab.orfeo-toolbox.org/s1-tiling/s1tiling/-/merge_requests/50)
 - ewoc_s1
 
 You can now run the following command to build the docker image:
@@ -54,7 +54,7 @@ To run the generation of ARD from S1 product ID with upload of data:
 :warning: Adapt the `tag_name` to the right one
 
 ```sh
-docker run --rm --env-file /local/path/to/env.file ewocs1processing:tag_name ewoc_s1_generate_ard_pid S1_PRD_ID_1 S1_PRD_ID_2 ... --upload -v
+docker run --rm --env-file /local/path/to/env.file ewocs1processing:${tag_name} ewoc_generate_s1_ard_pid /tmp S2_TILE_ID S1_PRD_ID_1 S1_PRD_ID_2 ... --upload -v
 ```
 
 If you are interested by the temporary data or if you want retrieve output data whitout upload you need to mount volume with the option `-v / --volume` and use the docker path in the command line.
@@ -66,7 +66,7 @@ To run the generation of ARD from work plan with upload of data:
 :warning: Adapt the `tag_name` to the right one
 
 ```sh
-docker run --rm -v /local/path/to/data:/data --env-file /local/path/to/env.file ewocs1processing:tag_name ewoc_s1_generate_ard_wp /data/path/to/wp.json --upload -v
+docker run --rm -v /local/path/to/data:/data --env-file /local/path/to/env.file ewocs1processing:tag_name ewoc_generate_s1_ard_wp /data/path/to/wp.json /tmp --upload -v
 ```
 
 :grey_exclamation: Please consult the help of `ewoc_s1` for more information on the ewoc_s1 CLI.
@@ -80,7 +80,7 @@ docker run --rm -v /local/path/to/data:/data --env-file /local/path/to/env.file 
 :exclamation: Not currently implemented
 
 ```sh
-docker run --rm ewocs1processing:tag_name ewoc_s1_generate_ard_db -v
+docker run --rm ewocs1processing:tag_name ewoc_generate_s1_ard_db -v
 ```
 
 ## Push EWoC Sentinel-1 processor docker image
