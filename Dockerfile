@@ -51,8 +51,8 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip \
 
 ARG OTB_VERSION=7.4.0
 LABEL OTB="${OTB_VERSION}"
-#ADD https://www.orfeo-toolbox.org/packages/OTB-${OTB_VERSION}-Linux64.run /tmp
-COPY OTB-${OTB_VERSION}-Linux64.run /tmp
+ADD https://www.orfeo-toolbox.org/packages/OTB-7.4.0-rc1-Linux64.run /tmp
+#COPY OTB-${OTB_VERSION}-Linux64.run /tmp
 ENV OTB_INSTALL_DIRPATH=/opt/otb-${OTB_VERSION}
 RUN chmod +x OTB-${OTB_VERSION}-Linux64.run \
       && ./OTB-${OTB_VERSION}-Linux64.run --target ${OTB_INSTALL_DIRPATH}
