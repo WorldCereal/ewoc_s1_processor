@@ -43,7 +43,6 @@ RUN apt-get update -y \
 && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip \
-      && python3 -m pip install --no-cache-dir virtualenv \
       && python3 -m pip install --no-cache-dir 'numpy<1.19'
 
 #------------------------------------------------------------------------
@@ -89,15 +88,14 @@ COPY S1Tiling-0.2.0rc5-5-g5073222.tar.gz /tmp
 
 SHELL ["/bin/bash", "-c"]
 
-ENV EWOC_S1_VENV=/opt/ewoc_s1_venv
-RUN python3 -m virtualenv ${EWOC_S1_VENV} \
-      && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
-      && source ${EWOC_S1_VENV}/bin/activate \
+#ENV EWOC_S1_VENV=/opt/ewoc_s1_venv
+RUN . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && pip install --no-cache-dir 'numpy<1.19' \
       && pip install --no-cache-dir /tmp/eotile-${EOTILE_VERSION}-py3-none-any.whl \
       && pip install --no-cache-dir /tmp/dataship-${EWOC_DATASHIP_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/S1Tiling-0.2.0rc5-5-g5073222.tar.gz \
-      && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz
+      && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz \
+      && pip install --no-cache-dir psycopg2-binary
 
 ARG EWOC_S1_DOCKER_VERSION='dev'
 LABEL version=${EWOC_S1_DOCKER_VERSION}
