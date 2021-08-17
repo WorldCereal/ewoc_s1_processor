@@ -45,6 +45,13 @@ jobs:
             type=semver,pattern={{major}}
           labels: |
             EWoC
+      - name: Download Dataship
+        uses: robinraju/release-downloader@v1.1
+        with:
+          repository: "WorldCereal/ewoc_dataship"
+          tag: "0.1.7"
+          fileName: "dataship-0.1.7.tar.gz"
+          token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
         uses: docker/build-push-action@v2.5.0
         with:
