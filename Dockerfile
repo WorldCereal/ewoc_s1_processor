@@ -99,10 +99,16 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && pip install --no-cache-dir /tmp/S1Tiling-0.2.0rc5-5-g5073222.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz
 
+RUN pip3 install boto3 \
+  && pip3 install botocore \
+  && pip3 install psycopg2-binary
+  
 ARG EWOC_S1_DOCKER_VERSION='dev'
 LABEL version=${EWOC_S1_DOCKER_VERSION}
 
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
-CMD [ "-h" ]
+#ENTRYPOINT [ "/opt/entrypoint.sh" ]
+#CMD [ "-h" ]
+WORKDIR /root
+ENTRYPOINT [ "/bin/bash" ]
