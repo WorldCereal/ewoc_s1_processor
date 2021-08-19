@@ -85,7 +85,7 @@ ARG S1TILING_VERSION=0.2.0rc5-5-g5073222
 LABEL S1TILING="${S1TILING_VERSION}"
 
 # Copy private python packages
-ADD eotile-${EOTILE_VERSION}-py3-none-any.whl /tmp
+COPY eotile-${EOTILE_VERSION}-py3-none-any.whl /tmp
 COPY dataship-${EWOC_DATASHIP_VERSION}.tar.gz /tmp
 COPY ewoc_s1-${EWOC_S1_VERSION}.tar.gz /tmp
 COPY S1Tiling-${S1TILING_VERSION}.tar.gz /tmp
