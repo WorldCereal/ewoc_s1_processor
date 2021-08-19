@@ -52,6 +52,13 @@ jobs:
           tag: "0.1.7"
           fileName: "dataship-0.1.7.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
+      - name: Download S1Tiling
+        uses: robinraju/release-downloader@v1.1
+        with:
+          repository: "WorldCereal/ewoc_s1tiling"
+          tag: "0.2.0rc5-5-g5073222"
+          fileName: "S1Tiling-0.2.0rc5-5-g5073222.tar.gz"
+          token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download EWoC S1
         uses: robinraju/release-downloader@v1.1
         with:
