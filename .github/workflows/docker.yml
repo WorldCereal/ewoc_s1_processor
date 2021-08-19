@@ -52,12 +52,26 @@ jobs:
           tag: "0.1.7"
           fileName: "dataship-0.1.7.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
+      - name: Download S1Tiling
+        uses: robinraju/release-downloader@v1.1
+        with:
+          repository: "WorldCereal/ewoc_s1tiling"
+          tag: "0.2.0rc5-5-g5073222"
+          fileName: "S1Tiling-0.2.0rc5-5-g5073222.tar.gz"
+          token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download EWoC S1
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_s1"
           tag: "0.2.6"
           fileName: "ewoc_s1-0.2.6.tar.gz"
+          token: ${{ secrets.CS_ORG_TOKEN }}
+      - name: Download EOTile
+        uses: robinraju/release-downloader@v1.1
+        with:
+          repository: "WorldCereal/ewoc_eotile"
+          tag: "0.2rc3"
+          fileName: "eotile-0.2rc3-py3-none-any.whl"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
         uses: docker/build-push-action@v2.5.0
