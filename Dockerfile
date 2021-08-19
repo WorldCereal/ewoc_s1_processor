@@ -29,7 +29,7 @@ LABEL description="This docker allow to run ewoc_s1 processing chain."
 
 WORKDIR /tmp
 
-ENV LANG=en_US.utf8 
+ENV LANG=en_US.utf8
 
 RUN apt-get update -y \
 && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
@@ -75,9 +75,9 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 #------------------------------------------------------------------------
 ## Install ptyhon packages
 
-ARG EWOC_S1_VERSION=0.2.5
+ARG EWOC_S1_VERSION=0.2.6
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
-ARG EWOC_DATASHIP_VERSION=0.1.6
+ARG EWOC_DATASHIP_VERSION=0.1.7
 LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
 ARG EOTILE_VERSION=0.2rc3
 LABEL EOTILE="${EOTILE_VERSION}"
