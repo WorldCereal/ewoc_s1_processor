@@ -45,33 +45,38 @@ jobs:
             type=semver,pattern={{major}}
           labels: |
             EWoC
+      # Extract COTS versions from Dockerfile
+      - name: COTS Versions
+        id: cots-versions
+        run: |
+          sed -n '/^ARG/s/ARG *\(.*\)=\(.*\)/::set-output name=\1::\2/p' Dockerfile
       - name: Download Dataship
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_dataship"
-          tag: "0.1.7"
-          fileName: "dataship-0.1.7.tar.gz"
+          tag: "${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}"
+          fileName: "dataship-${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download S1Tiling
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_s1tiling"
-          tag: "0.2.0rc5-5-g5073222"
-          fileName: "S1Tiling-0.2.0rc5-5-g5073222.tar.gz"
+          tag: "${{ steps.cots-versions.outputs.S1TILING_VERSION }}"
+          fileName: "S1Tiling-${{ steps.cots-versions.outputs.S1TILING_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download EWoC S1
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_s1"
-          tag: "0.2.6"
-          fileName: "ewoc_s1-0.2.6.tar.gz"
+          tag: "${{ steps.cots-versions.outputs.EWOC_S1_VERSION }}"
+          fileName: "ewoc_s1-${{ steps.cots-versions.outputs.EWOC_S1_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download EOTile
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_eotile"
-          tag: "0.2rc3"
-          fileName: "eotile-0.2rc3-py3-none-any.whl"
+          tag: "${{ steps.cots-versions.outputs.EOTILE_VERSION }}"
+          fileName: "eotile-${{ steps.cots-versions.outputs.EOTILE_VERSION }}-py3-none-any.whl"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
         uses: docker/build-push-action@v2.5.0
