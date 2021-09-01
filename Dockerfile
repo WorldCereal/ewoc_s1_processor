@@ -29,7 +29,7 @@ LABEL description="This docker allow to run ewoc_s1 processing chain."
 
 WORKDIR /tmp
 
-ENV LANG=en_US.utf8 
+ENV LANG=en_US.utf8
 
 RUN apt-get update -y \
 && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing --no-install-recommends \
@@ -49,10 +49,9 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip \
 #------------------------------------------------------------------------
 # Install and configure OTB for ewoc_s1
 
-ARG OTB_VERSION=7.4.0
+ARG OTB_VERSION=7.4.0-rc1
 LABEL OTB="${OTB_VERSION}"
-#ADD https://www.orfeo-toolbox.org/packages/OTB-${OTB_VERSION}-Linux64.run /tmp
-ADD OTB-${OTB_VERSION}-Linux64.run /tmp
+ADD https://www.orfeo-toolbox.org/packages/OTB-${OTB_VERSION}-Linux64.run /tmp
 ENV OTB_INSTALL_DIRPATH=/opt/otb-${OTB_VERSION}
 RUN chmod +x OTB-${OTB_VERSION}-Linux64.run \
       && ./OTB-${OTB_VERSION}-Linux64.run --target ${OTB_INSTALL_DIRPATH} \
@@ -75,9 +74,10 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 
 #------------------------------------------------------------------------
 ## Install ptyhon packages
-ARG EWOC_S1_VERSION=0.2.3
+
+ARG EWOC_S1_VERSION=0.2.6
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
-ARG EWOC_DATASHIP_VERSION=0.1.6
+ARG EWOC_DATASHIP_VERSION=0.1.7
 LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
 ARG EOTILE_VERSION=0.2rc3
 LABEL EOTILE="${EOTILE_VERSION}"
@@ -100,10 +100,16 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && pip install --no-cache-dir /tmp/S1Tiling-0.2.0rc5-5-g5073222.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz
 
+RUN pip3 install boto3 \
+  && pip3 install botocore \
+  && pip3 install psycopg2-binary
+  
 ARG EWOC_S1_DOCKER_VERSION='dev'
 LABEL version=${EWOC_S1_DOCKER_VERSION}
 
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
-CMD [ "-h" ]
+#ENTRYPOINT [ "/opt/entrypoint.sh" ]
+#CMD [ "-h" ]
+WORKDIR /root
+ENTRYPOINT [ "/bin/bash" ]
