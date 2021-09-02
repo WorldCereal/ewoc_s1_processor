@@ -75,7 +75,7 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 #------------------------------------------------------------------------
 ## Install ptyhon packages
 
-ARG EWOC_S1_VERSION=0.3
+ARG EWOC_S1_VERSION=0.4.1
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
 ARG EWOC_DATASHIP_VERSION=0.1.8
 LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
@@ -107,6 +107,7 @@ RUN pip3 install boto3 \
   && pip3 install psycopg2-binary
   
 ARG EWOC_S1_DOCKER_VERSION='dev'
+ENV EWOC_S1_DOCKER_VERSION=${EWOC_S1_DOCKER_VERSION}
 LABEL version=${EWOC_S1_DOCKER_VERSION}
 
 ADD entrypoint.sh /opt
