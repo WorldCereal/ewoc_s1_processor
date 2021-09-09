@@ -75,20 +75,17 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 #------------------------------------------------------------------------
 ## Install ptyhon packages
 
-ARG EWOC_S1_VERSION=0.4.1
+ARG EWOC_S1_VERSION=0.5
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
 ARG EWOC_DATASHIP_VERSION=0.1.8
 LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
 ARG EOTILE_VERSION=0.2rc3
 LABEL EOTILE="${EOTILE_VERSION}"
-ARG S1TILING_VERSION=0.2.0rc5-5-g5073222
-LABEL S1TILING="${S1TILING_VERSION}"
 
 # Copy private python packages
 COPY eotile-${EOTILE_VERSION}-py3-none-any.whl /tmp
 COPY dataship-${EWOC_DATASHIP_VERSION}.tar.gz /tmp
 COPY ewoc_s1-${EWOC_S1_VERSION}.tar.gz /tmp
-COPY S1Tiling-${S1TILING_VERSION}.tar.gz /tmp
 
 SHELL ["/bin/bash", "-c"]
 
@@ -99,7 +96,6 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && pip install --no-cache-dir 'numpy<1.19' \
       && pip install --no-cache-dir /tmp/eotile-${EOTILE_VERSION}-py3-none-any.whl \
       && pip install --no-cache-dir /tmp/dataship-${EWOC_DATASHIP_VERSION}.tar.gz \
-      && pip install --no-cache-dir /tmp/S1Tiling-${S1TILING_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz
 
 RUN pip3 install boto3 \
