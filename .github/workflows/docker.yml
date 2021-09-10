@@ -82,13 +82,13 @@ jobs:
         id: docker-build
         uses: docker/build-push-action@v2.5.0
         with:
-          push: ${{ startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           context: .
       - name: Validate
         uses: docker://hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:develop@${{ steps.docker-build.outputs.digest }}
-        if: ${{ github.ref == 'refs/heads/develop' }}
+        if: true
         with:
           entrypoint: /opt/entrypoint.sh
           args: python --version
