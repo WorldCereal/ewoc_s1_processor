@@ -87,7 +87,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           context: .
       - name: Branch name
-        id: branch_name
+        id: branch-name
         run: |
           echo ::set-output name=NAME::${GITHUB_REF#refs/heads/}
       - name: Validate
