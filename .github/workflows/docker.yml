@@ -93,5 +93,5 @@ jobs:
       - name: Validate
         uses: addnab/docker-run-action@v3
         with:
-          image: hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${{ steps.branch-name.outputs.NAME }}@${{ steps.docker-build.outputs.digest }}
+          image: hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${{ steps.branch-name.outputs.NAME }}
           run: /opt/entrypoint.sh python --version
