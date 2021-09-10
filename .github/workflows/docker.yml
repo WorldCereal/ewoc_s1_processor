@@ -86,9 +86,12 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           context: .
+      - name: Branch name
+        id: branch_name
+        run: |
+          echo ::set-output name=NAME::${GITHUB_REF#refs/heads/}
       - name: Validate
-        uses: docker://hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:develop@${{ steps.docker-build.outputs.digest }}
-        if: true
+        uses: addnab/docker-run-action@v3
         with:
-          entrypoint: /opt/entrypoint.sh
-          args: python --version
+          image: hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${{ steps.branch-name.outputs.NAME }}@${{ steps.docker-build.outputs.digest }}
+          run: /opt/entrypoint.sh python --version
