@@ -77,13 +77,10 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 
 ARG EWOC_S1_VERSION=0.5.0
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
-ARG EWOC_DATASHIP_VERSION=0.1.8
+ARG EWOC_DATASHIP_VERSION=0.1.9
 LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
-ARG EOTILE_VERSION=0.2rc3
-LABEL EOTILE="${EOTILE_VERSION}"
 
 # Copy private python packages
-COPY eotile-${EOTILE_VERSION}-py3-none-any.whl /tmp
 COPY dataship-${EWOC_DATASHIP_VERSION}.tar.gz /tmp
 COPY ewoc_s1-${EWOC_S1_VERSION}.tar.gz /tmp
 
@@ -94,7 +91,6 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && source ${EWOC_S1_VENV}/bin/activate \
       && pip install --no-cache-dir 'numpy<1.19' \
-      && pip install --no-cache-dir /tmp/eotile-${EOTILE_VERSION}-py3-none-any.whl \
       && pip install --no-cache-dir /tmp/dataship-${EWOC_DATASHIP_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz
 
