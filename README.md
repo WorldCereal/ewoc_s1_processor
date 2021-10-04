@@ -4,7 +4,7 @@
 
 To build the docker you need to have the following private python packages close to the Dockerfile:
 
-- dataship
+- ewoc_dag
 - ewoc_s1
 
 You can now run the following command to build the docker image:
@@ -21,7 +21,7 @@ You can pass the following version with `--build-arg` option to bypass encoded v
 
 - `OTB_VERSION`
 - `EWOC_S1_VERSION`
-- `EWOC_DATASHIP_VERSION`
+- `EWOC_DAG_VERSION`
 - `EOTILE_VERSION`
 
 ## Use EWoC Sentinel 1 processor docker image
