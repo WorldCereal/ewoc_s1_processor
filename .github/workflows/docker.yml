@@ -57,13 +57,6 @@ jobs:
           tag: "${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}"
           fileName: "dataship-${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
-      - name: Download S1Tiling
-        uses: robinraju/release-downloader@v1.1
-        with:
-          repository: "WorldCereal/ewoc_s1tiling"
-          tag: "${{ steps.cots-versions.outputs.S1TILING_VERSION }}"
-          fileName: "S1Tiling-${{ steps.cots-versions.outputs.S1TILING_VERSION }}.tar.gz"
-          token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download EWoC S1
         uses: robinraju/release-downloader@v1.1
         with:
