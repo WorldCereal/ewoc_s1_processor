@@ -65,9 +65,19 @@ jobs:
           fileName: "ewoc_s1-${{ steps.cots-versions.outputs.EWOC_S1_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
+        id: docker-build
         uses: docker/build-push-action@v2.5.0
         with:
           push: ${{ startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           context: .
+      - name: Branch name
+        id: branch-name
+        run: |
+          echo ::set-output name=NAME::${GITHUB_REF#refs/heads/}
+      - name: Validate
+        uses: addnab/docker-run-action@v3
+        with:
+          image: hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${{ steps.branch-name.outputs.NAME }}
+          run: /opt/entrypoint.sh python --version && /opt/entrypoint.sh pip show ewoc_s1 && /opt/entrypoint.sh pip list
