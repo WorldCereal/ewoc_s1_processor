@@ -4,9 +4,7 @@
 
 To build the docker you need to have the following private python packages close to the Dockerfile:
 
-- eotile
 - dataship
-- s1Tiling in a specific version (0.2.0rc5-5-g5073222) cf. [!50](https://gitlab.orfeo-toolbox.org/s1-tiling/s1tiling/-/merge_requests/50)
 - ewoc_s1
 
 You can now run the following command to build the docker image:
