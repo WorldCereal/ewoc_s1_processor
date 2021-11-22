@@ -88,3 +88,5 @@ jobs:
         with:
           image: hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${{ steps.branch-name.outputs.NAME }}
           run: /opt/entrypoint.sh python --version
+          run: /opt/entrypoint.sh pip show ewoc_s1
+          run: /opt/entrypoint.sh pip list
