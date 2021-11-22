@@ -64,13 +64,6 @@ jobs:
           tag: "${{ steps.cots-versions.outputs.EWOC_S1_VERSION }}"
           fileName: "ewoc_s1-${{ steps.cots-versions.outputs.EWOC_S1_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
-      - name: Download EOTile
-        uses: robinraju/release-downloader@v1.1
-        with:
-          repository: "WorldCereal/ewoc_eotile"
-          tag: "${{ steps.cots-versions.outputs.EOTILE_VERSION }}"
-          fileName: "eotile-${{ steps.cots-versions.outputs.EOTILE_VERSION }}-py3-none-any.whl"
-          token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
         id: docker-build
         uses: docker/build-push-action@v2.5.0
