@@ -96,19 +96,15 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && pip install --no-cache-dir 'numpy<1.19' \
       && pip install --no-cache-dir /tmp/eotile-${EOTILE_VERSION}-py3-none-any.whl \
       && pip install --no-cache-dir /tmp/dataship-${EWOC_DATASHIP_VERSION}.tar.gz \
-      && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz
+      && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz \
+      && pip install --no-cache-dir psycopg2-binary
+# Last package useful for AGU script
 
-RUN pip3 install boto3 \
-  && pip3 install botocore \
-  && pip3 install psycopg2-binary
-  
 ARG EWOC_S1_DOCKER_VERSION='dev'
 ENV EWOC_S1_DOCKER_VERSION=${EWOC_S1_DOCKER_VERSION}
 LABEL version=${EWOC_S1_DOCKER_VERSION}
 
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
-#ENTRYPOINT [ "/opt/entrypoint.sh" ]
+ENTRYPOINT [ "/opt/entrypoint.sh" ]
 #CMD [ "-h" ]
-WORKDIR /root
-ENTRYPOINT [ "/bin/bash" ]
