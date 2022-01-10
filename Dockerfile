@@ -73,7 +73,7 @@ ADD gdal-config ${OTB_INSTALL_DIRPATH}/bin
 RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 
 #------------------------------------------------------------------------
-## Install ptyhon packages
+## Install python packages
 
 ARG EWOC_S1_VERSION=0.6.0
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
