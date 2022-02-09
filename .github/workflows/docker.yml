@@ -55,7 +55,7 @@ jobs:
         with:
           repository: "WorldCereal/ewoc_dataship"
           tag: "${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}"
-          fileName: "dataship-${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}.tar.gz"
+          fileName: "ewoc_dag-${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download EWoC S1
         uses: robinraju/release-downloader@v1.1
