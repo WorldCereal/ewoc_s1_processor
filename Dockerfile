@@ -75,9 +75,9 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 #------------------------------------------------------------------------
 ## Install python packages
 
-ARG EWOC_S1_VERSION=0.6.0
+ARG EWOC_S1_VERSION=0.7.0
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
-ARG EWOC_DATASHIP_VERSION=0.1.10
+ARG EWOC_DATASHIP_VERSION=0.6.3
 LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
 
 # Copy private python packages
