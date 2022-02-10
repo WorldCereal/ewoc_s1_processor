@@ -29,8 +29,8 @@ You can pass the following version with `--build-arg` option to bypass encoded v
 ### Retrieve EWoC Sentinel-1 processor docker image
 
 ```sh
-docker login hfjcmwgl.gra5.container-registry.ovh.net -u ${harbor_username}
-docker pull hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
+docker login 643vlk6z.gra7.container-registry.ovh.net -u ${harbor_username}
+docker pull 643vlk6z.gra7.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
 ```
 
 ### Local usage (outside Argo workflow)
@@ -86,7 +86,7 @@ docker run --rm ewocs1processing:tag_name ewoc_generate_s1_ard_db -v
 :grey_exclamation: Please push only version with tags in git :grey_exclamation:
 
 ```sh
-docker login hfjcmwgl.gra5.container-registry.ovh.net -u ${harbor_username}
-docker tag ewocs1processing:${tag_name} hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
-docker push hfjcmwgl.gra5.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
+docker login 643vlk6z.gra7.container-registry.ovh.net -u ${harbor_username}
+docker tag ewocs1processing:${tag_name} 643vlk6z.gra7.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
+docker push 643vlk6z.gra7.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
 ```
