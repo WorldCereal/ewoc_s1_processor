@@ -50,12 +50,12 @@ jobs:
         id: cots-versions
         run: |
           sed -n '/^ARG/s/ARG *\(.*\)=\(.*\)/::set-output name=\1::\2/p' Dockerfile
-      - name: Download Dataship
+      - name: Download EWoC DAG
         uses: robinraju/release-downloader@v1.1
         with:
           repository: "WorldCereal/ewoc_dataship"
-          tag: "${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}"
-          fileName: "ewoc_dag-${{ steps.cots-versions.outputs.EWOC_DATASHIP_VERSION }}.tar.gz"
+          tag: "${{ steps.cots-versions.outputs.EWOC_DAG_VERSION }}"
+          fileName: "ewoc_dag-${{ steps.cots-versions.outputs.EWOC_DAG_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Download EWoC S1
         uses: robinraju/release-downloader@v1.1
