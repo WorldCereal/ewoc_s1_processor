@@ -77,11 +77,11 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 
 ARG EWOC_S1_VERSION=0.7.0
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
-ARG EWOC_DATASHIP_VERSION=0.6.3
-LABEL EWOC_DATASHIP="${EWOC_DATASHIP_VERSION}"
+ARG EWOC_DAG_VERSION=0.6.3
+LABEL EWOC_DAG="${EWOC_DAG_VERSION}"
 
 # Copy private python packages
-COPY dataship-${EWOC_DATASHIP_VERSION}.tar.gz /tmp
+COPY ewoc_dag-${EWOC_DAG_VERSION}.tar.gz /tmp
 COPY ewoc_s1-${EWOC_S1_VERSION}.tar.gz /tmp
 
 SHELL ["/bin/bash", "-c"]
@@ -91,7 +91,7 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && source ${EWOC_S1_VENV}/bin/activate \
       && pip install --no-cache-dir 'numpy<1.19' \
-      && pip install --no-cache-dir /tmp/dataship-${EWOC_DATASHIP_VERSION}.tar.gz \
+      && pip install --no-cache-dir /tmp/ewoc_dag-${EWOC_DAG_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz \
       && pip install --no-cache-dir psycopg2-binary
 # Last package useful for AGU script
