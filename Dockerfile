@@ -75,7 +75,7 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 #------------------------------------------------------------------------
 ## Install python packages
 
-ARG EWOC_S1_VERSION=0.7.4
+ARG EWOC_S1_VERSION=0.7.5
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
 ARG EWOC_DAG_VERSION=0.7.7
 LABEL EWOC_DAG="${EWOC_DAG_VERSION}"
