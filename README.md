@@ -4,7 +4,7 @@
 
 To build the docker you need to have the following private python packages close to the Dockerfile:
 
-- dataship
+- ewoc_dag
 - ewoc_s1
 
 You can now run the following command to build the docker image:
@@ -13,7 +13,7 @@ You can now run the following command to build the docker image:
 docker build --build-arg EWOC_S1_DOCKER_VERSION=$(git describe) --pull --rm -f "Dockerfile" -t ewocs1processing:$(git describe) "."
 ```
 
-### Advanced usage
+### Advanced build
 
 :warning: No guarantee on the results
 
@@ -33,57 +33,23 @@ docker login 643vlk6z.gra7.container-registry.ovh.net -u ${harbor_username}
 docker pull 643vlk6z.gra7.container-registry.ovh.net/world-cereal/ewocs1processing:${tag_name}
 ```
 
-### Local usage (outside Argo workflow)
+#### Generate S1 ARD from S1 product ID
 
-You need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`.
-
-This file contains the following variables:
-
-- S3_ENDPOINT
-- S3_ACCESS_KEY_ID
-- S3_SECRET_ACCESS_KEY
-- EODAG__CREODIAS__AUTH__CREDENTIALS__USERNAME
-- EODAG__CREODIAS__AUTH__CREDENTIALS__PASSWORD
-
-#### Generate S1 ARD from S1 prodcut ID
-
-To run the generation of ARD from S1 product ID with upload of data:
+To run the generation of ARD from S1 product ID with upload of data, you need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`. This file contains the variables related to `ewoc_dag`
 
 :warning: Adapt the `tag_name` to the right one
 
 ```sh
-docker run --rm --env-file /local/path/to/env.file ewocs1processing:${tag_name} ewoc_generate_s1_ard_pid /tmp S2_TILE_ID S1_PRD_ID_1 S1_PRD_ID_2 ... --upload -v
+docker run --rm --env-file /local/path/to/env.file ewocs1processing:${tag_name} ewoc_generate_s1_ard -v prd_ids TILE_ID S1_PRODUCT_ID_1 S1_PRODUCT_ID_2 ...
 ```
 
 If you are interested by the temporary data or if you want retrieve output data whitout upload you need to mount volume with the option `-v / --volume` and use the docker path in the command line.
 
-#### Generate ARD from a workplan
-
-To run the generation of ARD from work plan with upload of data:
-
-:warning: Adapt the `tag_name` to the right one
-
-```sh
-docker run --rm -v /local/path/to/data:/data --env-file /local/path/to/env.file ewocs1processing:tag_name ewoc_generate_s1_ard_wp /data/path/to/wp.json /tmp --upload -v
-```
-
-:grey_exclamation: Please consult the help of `ewoc_s1` for more information on the ewoc_s1 CLI.
-
-### Argo Workflow usage
-
-:grey_exclamation: Environnement variables are provided by Argo Workflow
-
-:warning: adapt the `tag_name` to the previous one
-
-:exclamation: Not currently implemented
-
-```sh
-docker run --rm ewocs1processing:tag_name ewoc_generate_s1_ard_db -v
-```
+:grey_exclamation: Please consult `ewoc_s1`  for more information on the ewoc_s1 CLI.
 
 ## Push EWoC Sentinel-1 processor docker image
 
-:grey_exclamation: Please push only version with tags in git :grey_exclamation:
+:warning: Push is done by github-actions! Use these commands only in specific case.
 
 ```sh
 docker login 643vlk6z.gra7.container-registry.ovh.net -u ${harbor_username}

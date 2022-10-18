@@ -44,7 +44,7 @@ RUN apt-get update -y \
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip \
       && python3 -m pip install --no-cache-dir virtualenv \
-      && python3 -m pip install --no-cache-dir 'numpy<1.19'
+      && python3 -m pip install --no-cache-dir 'numpy'
 
 #------------------------------------------------------------------------
 # Install and configure OTB for ewoc_s1
@@ -75,9 +75,9 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 #------------------------------------------------------------------------
 ## Install python packages
 
-ARG EWOC_S1_VERSION=0.7.5
+ARG EWOC_S1_VERSION=0.8.0
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
-ARG EWOC_DAG_VERSION=0.8.1
+ARG EWOC_DAG_VERSION=0.8.4
 LABEL EWOC_DAG="${EWOC_DAG_VERSION}"
 
 # Copy private python packages
@@ -90,7 +90,7 @@ ENV EWOC_S1_VENV=/opt/ewoc_s1_venv
 RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && source ${EWOC_S1_VENV}/bin/activate \
-      && pip install --no-cache-dir 'numpy<1.19' \
+      && pip install --no-cache-dir 'numpy' \
       && pip install --no-cache-dir /tmp/ewoc_dag-${EWOC_DAG_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz \
       && pip install --no-cache-dir psycopg2-binary
