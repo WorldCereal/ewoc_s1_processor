@@ -93,7 +93,8 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && pip install --no-cache-dir 'numpy' \
       && pip install --no-cache-dir /tmp/ewoc_dag-${EWOC_DAG_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz \
-      && pip install --no-cache-dir psycopg2-binary
+      && pip install --no-cache-dir psycopg2-binary \
+      && pip install --no-cache-dir rfc5424-logging-handler
 # Last package useful for AGU script
 
 ARG EWOC_S1_DOCKER_VERSION='dev'
