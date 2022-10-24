@@ -44,7 +44,7 @@ RUN apt-get update -y \
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip \
       && python3 -m pip install --no-cache-dir virtualenv \
-      && python3 -m pip install --no-cache-dir 'numpy'
+      && python3 -m pip install --no-cache-dir 'numpy<1.21'
 
 #------------------------------------------------------------------------
 # Install and configure OTB for ewoc_s1
@@ -90,7 +90,7 @@ ENV EWOC_S1_VENV=/opt/ewoc_s1_venv
 RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && . ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && source ${EWOC_S1_VENV}/bin/activate \
-      && pip install --no-cache-dir 'numpy' \
+      && pip install --no-cache-dir 'numpy<1.21' \
       && pip install --no-cache-dir /tmp/ewoc_dag-${EWOC_DAG_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz \
       && pip install --no-cache-dir psycopg2-binary \
