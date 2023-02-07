@@ -11,7 +11,7 @@ docker pull 643vlk6z.gra7.container-registry.ovh.net/world-cereal/ewocs1processi
 
 #### Generate S1 ARD from S1 product ID
 
-To run the generation of ARD from S1 product ID with upload of data, you need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`. This file contains the variables related to `ewoc_dag`. For a test on aws, you need to set: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` with our credentials and `EWOC_CLOUD_PROVIDER=aws`
+To run the generation of ARD from S1 product ID with upload of data, you need to pass to the docker image a file with some credentials with the option `--env-file /path/to/env.file`. This file contains the variables related to `ewoc_dag` and the following one `EWOC_S1_DEM_DB=/opt/dem_tiles_cop.gpkg`. For a test on aws, you need to set: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` with our credentials and `EWOC_CLOUD_PROVIDER=aws`.
 
 :warning: Adapt the `tag_name` to the right one
 

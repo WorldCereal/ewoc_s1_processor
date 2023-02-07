@@ -42,7 +42,7 @@ RUN apt-get update -y \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/*
 
-RUN python3 -m pip install --no-cache-dir --upgrade pip \
+RUN python3 -m pip install --no-cache-dir --upgrade 'pip<23' \
       && python3 -m pip install --no-cache-dir virtualenv \
       && python3 -m pip install --no-cache-dir 'numpy<1.21'
 
@@ -61,7 +61,6 @@ RUN chmod +x OTB-${OTB_VERSION}-Linux64.run \
       && echo "# Patching for s1tiling" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && echo 'LD_LIBRARY_PATH=$(cat_path "${CMAKE_PREFIX_PATH}/lib" "$LD_LIBRARY_PATH")' >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
       && echo "export LD_LIBRARY_PATH" >> ${OTB_INSTALL_DIRPATH}/otbenv.profile \
-      && rm -r "${OTB_INSTALL_DIRPATH}/share/otb/swig/build" \
       && rm -r "${OTB_INSTALL_DIRPATH}/bin/otbgui"* \
         "${OTB_INSTALL_DIRPATH}/bin/monteverdi" \
         "${OTB_INSTALL_DIRPATH}/lib/lib"*Qt* \
@@ -75,14 +74,17 @@ RUN chmod +x ${OTB_INSTALL_DIRPATH}/bin/gdal-config
 #------------------------------------------------------------------------
 ## Install python packages
 
-ARG EWOC_S1_VERSION=0.9.0
+ARG EWOC_S1_VERSION=0.11.0
 LABEL EWOC_S1="${EWOC_S1_VERSION}"
 ARG EWOC_DAG_VERSION=0.9.0
 LABEL EWOC_DAG="${EWOC_DAG_VERSION}"
+ARG S1_TILING_VERSION=1.0.0rc1+ewoc.1
+LABEL S1_TILING="${S1_TILING_VERSION}"
 
 # Copy private python packages
 COPY ewoc_dag-${EWOC_DAG_VERSION}.tar.gz /tmp
 COPY ewoc_s1-${EWOC_S1_VERSION}.tar.gz /tmp
+COPY S1Tiling-1.0.0rc1+ewoc.1.tar.gz /tmp
 
 SHELL ["/bin/bash", "-c"]
 
@@ -92,6 +94,7 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
       && source ${EWOC_S1_VENV}/bin/activate \
       && pip install --no-cache-dir 'numpy<1.21' \
       && pip install --no-cache-dir /tmp/ewoc_dag-${EWOC_DAG_VERSION}.tar.gz \
+      && pip install --no-cache-dir /tmp/S1Tiling-${S1_TILING_VERSION}.tar.gz \
       && pip install --no-cache-dir /tmp/ewoc_s1-${EWOC_S1_VERSION}.tar.gz \
       && pip install --no-cache-dir psycopg2-binary \
       && pip install --no-cache-dir rfc5424-logging-handler
@@ -100,6 +103,9 @@ RUN python3 -m virtualenv ${EWOC_S1_VENV} \
 ARG EWOC_S1_DOCKER_VERSION='dev'
 ENV EWOC_S1_DOCKER_VERSION=${EWOC_S1_DOCKER_VERSION}
 LABEL version=${EWOC_S1_DOCKER_VERSION}
+
+ADD dem_tiles_cop.gpkg /opt
+ENV EWOC_S1_DEM_DB=/opt/dem_tiles_cop.gpkg
 
 ADD entrypoint.sh /opt
 RUN chmod +x /opt/entrypoint.sh
