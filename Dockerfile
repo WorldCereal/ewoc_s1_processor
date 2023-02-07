@@ -84,7 +84,7 @@ LABEL S1_TILING="${S1_TILING_VERSION}"
 # Copy private python packages
 COPY ewoc_dag-${EWOC_DAG_VERSION}.tar.gz /tmp
 COPY ewoc_s1-${EWOC_S1_VERSION}.tar.gz /tmp
-COPY S1Tiling-1.0.0rc1+ewoc.1.tar.gz /tmp
+COPY S1Tiling-${S1_TILING_VERSION}.tar.gz /tmp
 
 SHELL ["/bin/bash", "-c"]
 

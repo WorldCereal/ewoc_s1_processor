@@ -64,6 +64,13 @@ jobs:
           tag: "${{ steps.cots-versions.outputs.EWOC_S1_VERSION }}"
           fileName: "ewoc_s1-${{ steps.cots-versions.outputs.EWOC_S1_VERSION }}.tar.gz"
           token: ${{ secrets.CS_ORG_TOKEN }}
+      - name: Download EWoC S1Tiling
+        uses: robinraju/release-downloader@v1.6
+        with:
+          repository: "WorldCereal/ewoc_s1tiling"
+          tag: "${{ steps.cots-versions.outputs.S1_TILING_VERSION }}"
+          fileName: "S1Tiling-${{ steps.cots-versions.outputs.S1_TILING_VERSION }}.tar.gz"
+          token: ${{ secrets.CS_ORG_TOKEN }}
       - name: Build Docker images
         id: docker-build
         uses: docker/build-push-action@v3.2.0
